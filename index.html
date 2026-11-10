@@ -124,11 +124,6 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label for="nombre">Nombre y Apellido:</label>
-            <input type="text" id="nombre" required placeholder="Nombre del operador / conductor">
-        </div>
-
         <div class="form-row">
             <div class="form-group">
                 <label for="salida">Lugar de Salida:</label>
@@ -140,36 +135,14 @@
             </div>
         </div>
 
-        <div class="form-row">
-            <div class="form-group">
-                <label for="kmLlegada">Km de Llegada:</label>
-                <input type="number" id="kmLlegada" placeholder="0">
-            </div>
-            <div class="form-group">
-                <label for="kmRecorrido">Km Recorrido:</label>
-                <input type="number" id="kmRecorrido" placeholder="0">
-            </div>
+        <div class="form-group">
+            <label for="kmLlegada">Km de Llegada:</label>
+            <input type="number" id="kmLlegada" placeholder="0">
         </div>
 
         <div class="form-group">
             <label for="motivo">Motivo de Viaje:</label>
             <textarea id="motivo" rows="2" placeholder="Detalle o descripción del servicio"></textarea>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group">
-                <label for="litros">Litros Cargados:</label>
-                <input type="number" step="0.01" id="litros" placeholder="0.00">
-            </div>
-            <div class="form-group">
-                <label for="factura">Factura N°:</label>
-                <input type="text" id="factura" placeholder="N° de Comprobante">
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="importe">Importe Total:</label>
-            <input type="number" id="importe" placeholder="Monto total">
         </div>
 
         <button type="submit" id="submitBtn">Guardar Registro</button>
@@ -179,7 +152,7 @@
 
 <script>
     // Reemplazar con la URL desplegada de tu Google Apps Script
-    const scriptURL = 'PEGAR_AQUI_TU_URL_DE_APPS_SCRIPT';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwIs0ZyBG3DBS1YFVycjtJ2GlYev8Ra-8KoWcH5O9JHdam83MKmJDHETEoY2ptem3bUqw/exec';
 
     const form = document.getElementById('fuelForm');
     form.addEventListener('submit', e => {
@@ -190,15 +163,10 @@
         const data = {
             movil: document.getElementById('movil').value,
             ci: document.getElementById('ci').value,
-            nombre: document.getElementById('nombre').value,
             salida: document.getElementById('salida').value,
             destino: document.getElementById('destino').value,
             kmLlegada: document.getElementById('kmLlegada').value,
-            kmRecorrido: document.getElementById('kmRecorrido').value,
-            motivo: document.getElementById('motivo').value,
-            litros: document.getElementById('litros').value,
-            factura: document.getElementById('factura').value,
-            importe: document.getElementById('importe').value
+            motivo: document.getElementById('motivo').value
         };
 
         fetch(scriptURL, {
