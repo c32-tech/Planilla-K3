@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Combustible y Movilidad - Planilla K3</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            padding: 20px;
+        }
+        .container {
+            max-width: 650px;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            margin: 20px auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .header h2 {
+            color: #1e293b;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .header p {
+            color: #64748b;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #334155;
+            font-size: 14px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: #f8fafc;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+            background-color: #ffffff;
+        }
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        .form-row .form-group {
+            flex: 1;
+        }
+        button {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #1d4ed8;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 15px;
+            font-weight: 600;
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h2>Control de Combustible y Movilidad</h2>
+        <p>Planilla K3 — Registro Operativo</p>
+    </div>
+    
+    <form id="fuelForm">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="movil">Móvil:</label>
+                <input type="text" id="movil" required placeholder="Ej: AB33">
+            </div>
+            <div class="form-group">
+                <label for="ci">C.I.:</label>
+                <input type="text" id="ci" required placeholder="N° de Cédula">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="nombre">Nombre y Apellido:</label>
+            <input type="text" id="nombre" required placeholder="Nombre del conductor / personal">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="salida">Lugar de Salida:</label>
+                <input type="text" id="salida" required placeholder="Origen">
+            </div>
+            <div class="form-group">
+                <label for="destino">Lugar de Destino:</label>
+                <input type="text" id="destino" required placeholder="Destino">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="kmLlegada">Km de Llegada:</label>
+                <input type="number" id="kmLlegada" placeholder="0">
+            </div>
+            <div class="form-group">
+                <label for="kmRecorrido">Km Recorrido:</label>
+                <input type="number" id="kmRecorrido" placeholder="0">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="motivo">Motivo de Viaje:</label>
+            <textarea id="motivo" rows="2" placeholder="Detalle o descripción del servicio"></textarea>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="litros">Litros Cargados:</label>
+                <input type="number" step="0.01" id="litros" placeholder="0.00">
+            </div>
+            <div class="form-group">
+                <label for="factura">Factura N°:</label>
+                <input type="text" id="factura" placeholder="N° de Comprobante">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="importe">Importe Total:</label>
+            <input type="number" id="importe" placeholder="Monto total">
+        </div>
+
+        <button type="submit" id="submitBtn">Guardar Registro</button>
+        <div class="loading" id="loadingMsg">Guardando en Google Drive...</div>
+    </form>
+</div>
+
+<script>
+    // Reemplazar con la URL desplegada de tu Google Apps Script
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwIs0ZyBG3DBS1YFVycjtJ2GlYev8Ra-8KoWcH5O9JHdam83MKmJDHETEoY2ptem3bUqw/exec';
+
+    const form = document.getElementById('fuelForm');
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        document.getElementById('submitBtn').style.display = 'none';
+        document.getElementById('loadingMsg').style.display = 'block';
+
+        const data = {
+            movil: document.getElementById('movil').value,
+            ci: document.getElementById('ci').value,
+            nombre: document.getElementById('nombre').value,
+            salida: document.getElementById('salida').value,
+            destino: document.getElementById('destino').value,
+            kmLlegada: document.getElementById('kmLlegada').value,
+            kmRecorrido: document.getElementById('kmRecorrido').value,
+            motivo: document.getElementById('motivo').value,
+            litros: document.getElementById('litros').value,
+            factura: document.getElementById('factura').value,
+            importe: document.getElementById('importe').value
+        };
+
+        fetch(scriptURL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(() => {
+            alert('¡Registro guardado exitosamente!');
+            form.reset();
+            document.getElementById('submitBtn').style.display = 'block';
+            document.getElementById('loadingMsg').style.display = 'none';
+        })
+        .catch(error => {
+            alert('Error al guardar: ' + error.message);
+            document.getElementById('submitBtn').style.display = 'block';
+            document.getElementById('loadingMsg').style.display = 'none';
+        });
+    });
+</script>
+
+</body>
+</html>
