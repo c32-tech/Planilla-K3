@@ -9,7 +9,6 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -110,7 +109,14 @@
         <div class="form-row">
             <div class="form-group">
                 <label for="movil">Móvil:</label>
-                <input type="text" id="movil" required placeholder="Ej: AB33">
+                <select id="movil" required>
+                    <option value="" disabled selected>Seleccione un móvil</option>
+                    <option value="AB-33">AB-33</option>
+                    <option value="AB-34">AB-34</option>
+                    <option value="AT-31">AT-31</option>
+                    <option value="AR-32">AR-32</option>
+                    <option value="X-3">X-3</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="ci">C.I.:</label>
@@ -120,7 +126,7 @@
 
         <div class="form-group">
             <label for="nombre">Nombre y Apellido:</label>
-            <input type="text" id="nombre" required placeholder="Nombre del conductor / personal">
+            <input type="text" id="nombre" required placeholder="Nombre del operador / conductor">
         </div>
 
         <div class="form-row">
@@ -173,7 +179,7 @@
 
 <script>
     // Reemplazar con la URL desplegada de tu Google Apps Script
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwIs0ZyBG3DBS1YFVycjtJ2GlYev8Ra-8KoWcH5O9JHdam83MKmJDHETEoY2ptem3bUqw/exec';
+    const scriptURL = 'PEGAR_AQUI_TU_URL_DE_APPS_SCRIPT';
 
     const form = document.getElementById('fuelForm');
     form.addEventListener('submit', e => {
